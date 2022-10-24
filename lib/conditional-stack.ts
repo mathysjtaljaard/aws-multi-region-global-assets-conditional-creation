@@ -46,14 +46,14 @@ export class ConditionalStack extends cdk.Stack {
     const cfnBucket = creatingBucketConditionally.node.defaultChild as s3.CfnBucket
     cfnBucket.cfnOptions.condition = doesBucketExists
 
-    const createdBucket = s3.Bucket.fromBucketAttributes(this, 's3_bucket_from_name', { bucketName: bucket_name })
+    const bucketToUse = s3.Bucket.fromBucketAttributes(this, 'UsThisBucketGoingForward', { bucketName: bucket_name })
 
     // use this variable going forward for resources needing access to the S3 Bucket
     // outputs
     // Possible to use `Fn.importValue(exportName)` 
 
     new CfnOutput(this, 'S3BucketOutput', {
-      value: createdBucket.bucketArn,
+      value: bucketToUse.bucketArn,
       exportName: 'mathysglobalbucket'
     })
 
